@@ -4,6 +4,8 @@ using System.Collections;
 using Pose = Thalmic.Myo.Pose;
 using VibrationType = Thalmic.Myo.VibrationType;
 
+[RequireComponent(typeof(AudioSource))]
+
 public class MyoTrack : MonoBehaviour {
 	private const double FIRE_TIME = 0.2;
 	private const double RECHARGE_TIME = 0.6;
@@ -11,7 +13,7 @@ public class MyoTrack : MonoBehaviour {
 
 	// Myo game object to connect with.
 	// This object must have a ThalmicMyo script attached.
-	public GameObject myo = null;	
+	public GameObject myo = null;
 	
 	private GameObject Myo;
 	private Vector3 rotation;
@@ -38,6 +40,8 @@ public class MyoTrack : MonoBehaviour {
 	// This way we the user can not assign a prefab without rigidbody
 	public Rigidbody Rocket;
 	
+    public AudioClip impact;
+
 	// Use this for initialization
 	void Start () {
 		Myo = GameObject.Find ("Myo");
@@ -63,7 +67,9 @@ public class MyoTrack : MonoBehaviour {
 			
 			// Vibrate the Myo armband when a fist is made.
 			if (thalmicMyo.pose == Pose.Fist) {
+                audio.PlayOneShot(impact, 0.7F);
 				thalmicMyo.Vibrate (VibrationType.Medium);
+                
 				time = 0;
 				State = (int)States.Firing;
 				
