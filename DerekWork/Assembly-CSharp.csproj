@@ -47,7 +47,9 @@
   </ItemGroup>
   <ItemGroup>
      <Compile Include="Assets\DerekScripts\AttackBall.cs" />
+     <Compile Include="Assets\DerekScripts\DeleteOnStart.cs" />
      <Compile Include="Assets\DerekScripts\Explosion.cs" />
+     <Compile Include="Assets\DerekScripts\FixForward.cs" />
      <Compile Include="Assets\DerekScripts\Missile.cs" />
      <Compile Include="Assets\DerekScripts\MonsterSpawner.cs" />
      <Compile Include="Assets\DerekScripts\MyoTrack.cs" />
@@ -79,6 +81,7 @@
      <Compile Include="Assets\OVR\Scripts\OVRUGUI.cs" />
      <Compile Include="Assets\OVR\Scripts\OVRUtils.cs" />
      <Compile Include="Assets\OVR\Scripts\OVRVisionGuide.cs" />
+     <Compile Include="Assets\TriangleMeshFlip.cs" />
      <None Include="Assets\Plugins\donotdelete.txt" />
      <None Include="Assets\OVR\Shaders\TextShader3D.shader" />
      <None Include="Assets\Myo\README-MyoUnity.txt" />
