@@ -98,13 +98,13 @@ public class MyoTrack : MonoBehaviour {
 		rotation.z = 0;
 		transform.eulerAngles = rotation;
 		if (Input.GetKey("w")) {
-			offset.x += 1;
+			offset.x -= 1;
 		}
 		if (Input.GetKey("a")) {
-			offset.y+= 1;
+			offset.y += 1;
 		}
 		if (Input.GetKey("s")) {
-			offset.x -= 1;
+			offset.x += 1;
 		}
 		if (Input.GetKey("d")) {
 			offset.y -= 1;
@@ -120,7 +120,7 @@ public class MyoTrack : MonoBehaviour {
 			FireRocket();			
 			return;
 		}
-		transform.localScale = Vector3Util.Vector3(0.5,1,0.5);
+		transform.localScale = Vector3Util.Vector3(0.4,1.6,0.4);
 	}
 
 	void start_game() {
@@ -140,7 +140,7 @@ public class MyoTrack : MonoBehaviour {
 	
 	void FireRocket () {
 		Debug.Log (cameraController.transform.rotation.ToString ());
-		Rigidbody rocketClone = (Rigidbody) Instantiate(Rocket, transform.position, transform.rotation);
+		Rigidbody rocketClone = (Rigidbody) Instantiate(Rocket, transform.position+transform.up, transform.rotation);
 		Physics.IgnoreCollision(rocketClone.collider, collider);
 		rocketClone.velocity = -transform.up * ROCKET_SPEED;		
 		
