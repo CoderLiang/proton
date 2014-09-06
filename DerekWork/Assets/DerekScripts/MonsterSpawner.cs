@@ -49,6 +49,7 @@ public class MonsterSpawner : MonoBehaviour {
 		}
 		Instantiate (Monster,direction,new Quaternion(level,0,0,0));
 		++spawned;
+		Debug.Log (spawned);
 	}
 	
 	// Update is called once per frame
