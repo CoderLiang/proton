@@ -70,9 +70,7 @@ public class MyoTrack : MonoBehaviour {
 			
 			// Vibrate the Myo armband when a fist is made.
 			if (thalmicMyo.pose == Pose.Fist) {
-                audio.PlayOneShot(impact, 0.7F);
-				thalmicMyo.Vibrate (VibrationType.Medium);
-                
+				thalmicMyo.Vibrate (VibrationType.Medium);                
 				time = 0;
 				State = (int)States.Firing;
 				
@@ -139,6 +137,7 @@ public class MyoTrack : MonoBehaviour {
 	}
 	
 	void FireRocket () {
+		audio.PlayOneShot(impact, 0.7F);
 		Debug.Log (cameraController.transform.rotation.ToString ());
 		Rigidbody rocketClone = (Rigidbody) Instantiate(Rocket, transform.position+transform.up, transform.rotation);
 		Physics.IgnoreCollision(rocketClone.collider, collider);
