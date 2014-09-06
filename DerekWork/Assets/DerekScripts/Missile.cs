@@ -14,7 +14,7 @@ public class Missile : MonoBehaviour {
 	}
 	
 	void OnCollisionEnter (Collision col) {
-		if (col.gameObject.name == "Sphere") {
+		if (col.gameObject.name == "Monster(Clone)" || col.gameObject.name == "Monster") {
 			Destroy (col.gameObject);
 			Instantiate(Explosion,transform.position,transform.rotation);
 			Destroy (gameObject);
