@@ -10,3 +10,6 @@ DerekWork/Temp/
 =======
 Library
 >>>>>>> theirs
+/DerekWork/*.userprefs
+/DerekWork/*.csproj
+/DerekWork/*.sln
