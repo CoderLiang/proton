@@ -21,12 +21,31 @@ public class MonsterSpawner : MonoBehaviour {
 		direction = direction.normalized * SPAWN_DISTANCE;
 		direction.y = Random.Range (-2f, 15f);
 		int level = 0;
-		if (spawned % 12 == 0) {
-			level = 3;
-		} else if (spawned % 7 == 0) {
-			level = 2;
-		} else if (spawned % 5 == 0) {
-			level = 1;
+		int rand = Random.Range (1,25);
+		if (spawned >= 5 && spawned < 10) {
+			if (rand > 15) {
+				level = 1;
+			}
+		} else if (spawned >= 10 && spawned < 15) {
+			if (rand > 15) {
+				level = 2;
+			} else if (rand > 5) {
+				level = 1;
+			}
+		} else if (spawned >= 15 && spawned < 20) {
+			if (rand > 15) {
+				level = 3;
+			} else if (rand > 5) {
+				level = 2;
+			} else {
+				level = 1;
+			}
+		} else if (spawned >= 20) {
+			if (rand > 10) {
+				level = 3;
+			} else {
+				level = 2;
+			}
 		}
 		Instantiate (Monster,direction,new Quaternion(level,0,0,0));
 		++spawned;
