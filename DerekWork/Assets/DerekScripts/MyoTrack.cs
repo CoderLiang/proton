@@ -23,6 +23,7 @@ public class MyoTrack : MonoBehaviour {
 	public TextMesh subTitleText1;
 	public TextMesh subTitleText2;
 	public TextMesh subTitleText3;
+	public bool wasStrongGesture;
 	public static MyoTrack me;
 
 
@@ -108,8 +109,13 @@ public class MyoTrack : MonoBehaviour {
 			_lastPose = thalmicMyo.pose;
 			
 			// Vibrate the Myo armband when a fist is made.
-			if (thalmicMyo.pose != Pose.Rest) {
-				thalmicMyo.Vibrate (VibrationType.Medium);                
+			if (thalmicMyo.pose != Pose.Rest && thalmicMyo.pose != Pose.WaveIn && thalmicMyo.pose != Pose.WaveOut) {
+				thalmicMyo.Vibrate (VibrationType.Medium); 
+				if(thalmicMyo.pose == Pose.ThumbToPinky || thalmicMyo.pose == Pose.Fist) {
+					wasStrongGesture = true;
+				} else {
+					wasStrongGesture = false;
+				}
 				time = 0;
 				State = (int)States.Firing;
 				
@@ -208,7 +214,9 @@ public class MyoTrack : MonoBehaviour {
 			if (game_started) {
 				FireCommand ();
 			} else {
-				start_game();
+				if (wasStrongGesture == true) {
+					start_game();
+				}
 			}
 		} else if (State == (int)States.Recharging) {
 			Recharge ();
