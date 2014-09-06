@@ -15,6 +15,9 @@ public class MyoTrack : MonoBehaviour {
 	private const double RECHARGE_TIME = 0.6;
 	public float ROCKET_SPEED = 100f;
 	public GameObject monsterSpawner;
+	private float BaseX;
+	private float BaseY;
+	private float BaseZ;
 
 	// Myo game object to connect with.
 	// This object must have a ThalmicMyo script attached.
@@ -50,6 +53,9 @@ public class MyoTrack : MonoBehaviour {
 	// Use this for initialization
 	void Start () {
 		Myo = GameObject.Find ("Myo");
+		BaseX = transform.localScale.x;
+		BaseY = transform.localScale.y;
+		BaseZ = transform.localScale.z;
 	}
 
 	public static void endGame() {
@@ -77,9 +83,7 @@ public class MyoTrack : MonoBehaviour {
 			
 			// Vibrate the Myo armband when a fist is made.
 			if (thalmicMyo.pose == Pose.Fist) {
-                audio.PlayOneShot(impact, 0.7F);
-				thalmicMyo.Vibrate (VibrationType.Medium);
-                
+				thalmicMyo.Vibrate (VibrationType.Medium);                
 				time = 0;
 				State = (int)States.Firing;
 				
@@ -123,11 +127,11 @@ public class MyoTrack : MonoBehaviour {
 		if (time > FIRE_TIME) {
 			State = (int)States.Recharging;
 			time = 0;
-			transform.localScale = Vector3Util.Vector3(0.25,2,0.25);
+			transform.localScale = Vector3Util.Vector3(BaseX,BaseY,BaseZ);
 			FireRocket();			
 			return;
 		}
-		transform.localScale = Vector3Util.Vector3(0.4,1.6,0.4);
+		transform.localScale = Vector3Util.Vector3(1.25*BaseX,0.75*BaseY,1.25*BaseZ);
 	}
 
 	void start_game() {
@@ -147,6 +151,7 @@ public class MyoTrack : MonoBehaviour {
 	}
 	
 	void FireRocket () {
+		audio.PlayOneShot(impact, 0.7F);
 		Debug.Log (cameraController.transform.rotation.ToString ());
 		Rigidbody rocketClone = (Rigidbody) Instantiate(Rocket, transform.position+transform.up, transform.rotation);
 		Physics.IgnoreCollision(rocketClone.collider, collider);

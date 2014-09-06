@@ -5,11 +5,11 @@
 	<Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
 	<ProductVersion>10.0.20506</ProductVersion>
 	<SchemaVersion>2.0</SchemaVersion>
-	<ProjectGuid>{40C356AC-B4A6-4D8A-4A96-13A7A5584D6E}</ProjectGuid>
+	<ProjectGuid>{07526CC7-DDC1-A120-B6E1-FA3DD9C39BA3}</ProjectGuid>
 	<OutputType>Library</OutputType>
 	<AppDesignerFolder>Properties</AppDesignerFolder>
 	<RootNamespace></RootNamespace>
-	<AssemblyName>Assembly-CSharp-Editor</AssemblyName>
+	<AssemblyName>Assembly-CSharp</AssemblyName>
 	<TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
 	<FileAlignment>512</FileAlignment>
 	<BaseDirectory>Assets</BaseDirectory>
@@ -46,25 +46,47 @@
 	</Reference>
   </ItemGroup>
   <ItemGroup>
-     <Compile Include="Assets\OVR\Editor\OVRBuild.cs" />
-     <Compile Include="Assets\OVR\Editor\OVRCameraControllerEditor.cs" />
-     <Compile Include="Assets\OVR\Editor\OVRDeviceEditor.cs" />
-     <Compile Include="Assets\OVR\Editor\OVREditorGUIUtility.cs" />
-     <Compile Include="Assets\OVR\Editor\OVRPlayerControllerEditor.cs" />
-     <Compile Include="Assets\OVR\Editor\OVRPrefabs.cs" />
-     <Compile Include="Assets\OVR\Editor\OVRShimLoader.cs" />
-     <Compile Include="Assets\OVR\Editor\OVRUGUIEditor.cs" />
+     <Compile Include="Assets\DerekScripts\AttackBall.cs" />
+     <Compile Include="Assets\DerekScripts\DeleteOnStart.cs" />
+     <Compile Include="Assets\DerekScripts\Explosion.cs" />
+     <Compile Include="Assets\DerekScripts\FixForward.cs" />
+     <Compile Include="Assets\DerekScripts\Missile.cs" />
+     <Compile Include="Assets\DerekScripts\MonsterSpawner.cs" />
+     <Compile Include="Assets\DerekScripts\MyoTrack.cs" />
+     <Compile Include="Assets\DerekScripts\Vector3Util.cs" />
+     <Compile Include="Assets\GunEndRotationF.cs" />
+     <Compile Include="Assets\Myo Samples\Scripts\ColorBoxByPose.cs" />
+     <Compile Include="Assets\Myo Samples\Scripts\JointOrientation.cs" />
+     <Compile Include="Assets\Myo Samples\Scripts\SampleSceneGUI.cs" />
+     <Compile Include="Assets\Myo\Scripts\Myo.NET\EventTypes.cs" />
+     <Compile Include="Assets\Myo\Scripts\Myo.NET\Hub.cs" />
+     <Compile Include="Assets\Myo\Scripts\Myo.NET\Myo.cs" />
+     <Compile Include="Assets\Myo\Scripts\Myo.NET\Pose.cs" />
+     <Compile Include="Assets\Myo\Scripts\Myo.NET\Properties\AssemblyInfo.cs" />
+     <Compile Include="Assets\Myo\Scripts\Myo.NET\Quaternion.cs" />
+     <Compile Include="Assets\Myo\Scripts\Myo.NET\Vector3.cs" />
+     <Compile Include="Assets\Myo\Scripts\Myo.NET\libmyo.cs" />
+     <Compile Include="Assets\Myo\Scripts\ThalmicHub.cs" />
+     <Compile Include="Assets\Myo\Scripts\ThalmicMyo.cs" />
+     <Compile Include="Assets\OVR\Scripts\OVRCamera.cs" />
+     <Compile Include="Assets\OVR\Scripts\OVRCameraController.cs" />
+     <Compile Include="Assets\OVR\Scripts\OVRCrosshair.cs" />
+     <Compile Include="Assets\OVR\Scripts\OVRDevice.cs" />
+     <Compile Include="Assets\OVR\Scripts\OVRGUI.cs" />
+     <Compile Include="Assets\OVR\Scripts\OVRGamepadController.cs" />
+     <Compile Include="Assets\OVR\Scripts\OVRGridCube.cs" />
+     <Compile Include="Assets\OVR\Scripts\OVRHmd.cs" />
+     <Compile Include="Assets\OVR\Scripts\OVRMainMenu.cs" />
+     <Compile Include="Assets\OVR\Scripts\OVRPlayerController.cs" />
+     <Compile Include="Assets\OVR\Scripts\OVRPresetManager.cs" />
+     <Compile Include="Assets\OVR\Scripts\OVRUGUI.cs" />
+     <Compile Include="Assets\OVR\Scripts\OVRUtils.cs" />
+     <Compile Include="Assets\OVR\Scripts\OVRVisionGuide.cs" />
+     <Compile Include="Assets\TriangleMeshFlip.cs" />
      <None Include="Assets\Plugins\donotdelete.txt" />
      <None Include="Assets\OVR\Shaders\TextShader3D.shader" />
      <None Include="Assets\Myo\README-MyoUnity.txt" />
      <None Include="Assets\OVR\Shaders\OVRGUIShader.shader" />
- <Reference Include="UnityEditor.Graphs">
- <HintPath>C:/Program Files (x86)/Unity/Editor/Data/Managed/UnityEditor.Graphs.dll</HintPath>
- </Reference>
-  </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="Assembly-CSharp-vs.csproj">
-      <Project>{07526CC7-DDC1-A120-B6E1-FA3DD9C39BA3}</Project>      <Name>Assembly-CSharp-vs</Name>    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
