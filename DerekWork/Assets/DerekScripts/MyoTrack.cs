@@ -7,6 +7,9 @@ using VibrationType = Thalmic.Myo.VibrationType;
 [RequireComponent(typeof(AudioSource))]
 
 public class MyoTrack : MonoBehaviour {
+	public OVRCameraController cameraController;
+	public OVRPlayerController playerController;
+	public static bool game_started = false;
 	private const double FIRE_TIME = 0.2;
 	private const double RECHARGE_TIME = 0.6;
 	public float ROCKET_SPEED = 100f;
@@ -32,9 +35,9 @@ public class MyoTrack : MonoBehaviour {
 	
 	private enum States
 	{
-		Preinitial, Initial, Ready, Firing, Recharging
+		Ready, Firing, Recharging
 	}
-	private int State = (int)States.Preinitial;
+	private int State = (int)States.Ready;
 	
 	// Require the rocket to be a rigidbody.
 	// This way we the user can not assign a prefab without rigidbody
@@ -119,8 +122,24 @@ public class MyoTrack : MonoBehaviour {
 		}
 		transform.localScale = Vector3Util.Vector3(0.55,2.5,0.55);
 	}
+
+	void start_game() {
+		//cameraController.EnableOrientation = true;
+		//cameraController.EnablePosition = true;
+		//cameraController.TrackerRotatesY = true;
+		//Debug.Log (cameraController.transform.rotation.ToString ());
+		//Quaternion inverseQuat = new Quaternion (-cameraController.transform.rotation.x,
+		//                                         -cameraController.transform.rotation.y,
+		//                                         -cameraController.transform.rotation.z,
+		//                                         -cameraController.transform.rotation.w);
+
+		//cameraController.SetOrientationOffset (inverseQuat);
+		game_started = true;
+		Initialize ();
+	}
 	
 	void FireRocket () {
+		Debug.Log (cameraController.transform.rotation.ToString ());
 		Rigidbody rocketClone = (Rigidbody) Instantiate(Rocket, transform.position+transform.up, transform.rotation);
 		Physics.IgnoreCollision(rocketClone.collider, collider);
 		rocketClone.velocity = -transform.up * ROCKET_SPEED;		
@@ -138,19 +157,19 @@ public class MyoTrack : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
-		if (State == (int)States.Preinitial)	{
-			State = (int)States.Initial;
-			return;
+		if (game_started) {
+				RotationCommand ();
 		}
-		if (State == (int)States.Initial)	{
-			Initialize ();
-			return;
-		}
-		RotationCommand ();
 		if (State == (int)States.Ready) {
+			Debug.Log ("States.Ready");
 			PoseCommand ();
 		} else if (State == (int)States.Firing) {
-			FireCommand ();
+			Debug.Log("States.Firing");
+			if (game_started) {
+				FireCommand ();
+			} else {
+				start_game();
+			}
 		} else if (State == (int)States.Recharging) {
 			Recharge ();
 		}
