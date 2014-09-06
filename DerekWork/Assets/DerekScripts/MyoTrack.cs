@@ -180,7 +180,7 @@ public class MyoTrack : MonoBehaviour {
 	void FireRocket () {
 		audio.PlayOneShot(impact, 0.7F);
 		Debug.Log (cameraController.transform.rotation.ToString ());
-		Rigidbody rocketClone = (Rigidbody) Instantiate(Rocket, transform.position+transform.up, transform.rotation);
+		Rigidbody rocketClone = (Rigidbody) Instantiate(Rocket, transform.position + transform.up, transform.rotation);
 		Physics.IgnoreCollision(rocketClone.collider, collider);
 		rocketClone.velocity = -transform.up * ROCKET_SPEED;		
 		
