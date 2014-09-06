@@ -5,7 +5,9 @@ using Pose = Thalmic.Myo.Pose;
 using VibrationType = Thalmic.Myo.VibrationType;
 
 public class MyoTrack : MonoBehaviour {
-	private const double FIRE_TIME = 0.4;
+	private const double FIRE_TIME = 0.2;
+	private const double RECHARGE_TIME = 0.6;
+	public float ROCKET_SPEED = 100f;
 
 	// Myo game object to connect with.
 	// This object must have a ThalmicMyo script attached.
@@ -28,14 +30,13 @@ public class MyoTrack : MonoBehaviour {
 	
 	private enum States
 	{
-		Preinitial, Initial, Ready, Firing
+		Preinitial, Initial, Ready, Firing, Recharging
 	}
 	private int State = (int)States.Preinitial;
 	
 	// Require the rocket to be a rigidbody.
 	// This way we the user can not assign a prefab without rigidbody
 	public Rigidbody Rocket;
-	public float RocketSpeed = 100f;
 	
 	// Use this for initialization
 	void Start () {
@@ -43,6 +44,12 @@ public class MyoTrack : MonoBehaviour {
 	}
 	
 	void PoseCommand () {
+		if (Input.GetKey("p")) {
+			time = 0;
+			State = (int)States.Firing;
+			return;
+		}
+	
 		// Access the ThalmicMyo component attached to the Myo game object.
 		ThalmicMyo thalmicMyo = myo.GetComponent<ThalmicMyo> ();
 		
@@ -81,12 +88,25 @@ public class MyoTrack : MonoBehaviour {
 		rotation = Myo.transform.eulerAngles - offset;
 		rotation.z = 0;
 		transform.eulerAngles = rotation;
+		if (Input.GetKey("w")) {
+			offset.x += 1;
+		}
+		if (Input.GetKey("a")) {
+			offset.y+= 1;
+		}
+		if (Input.GetKey("s")) {
+			offset.x -= 1;
+		}
+		if (Input.GetKey("d")) {
+			offset.y -= 1;
+		}
 	}
 	
 	void FireCommand () {
 		time += Time.deltaTime;
 		if (time > FIRE_TIME) {
-			State = (int)States.Ready;
+			State = (int)States.Recharging;
+			time = 0;
 			transform.localScale = Vector3Util.Vector3(0.25,2,0.25);
 			FireRocket();			
 			return;
@@ -97,10 +117,17 @@ public class MyoTrack : MonoBehaviour {
 	void FireRocket () {
 		Rigidbody rocketClone = (Rigidbody) Instantiate(Rocket, transform.position, transform.rotation);
 		Physics.IgnoreCollision(rocketClone.collider, collider);
-		rocketClone.velocity = -transform.up * RocketSpeed;		
+		rocketClone.velocity = -transform.up * ROCKET_SPEED;		
 		
 		// You can also acccess other components / scripts of the clone
 		//rocketClone.GetComponent<MyRocketScript>().DoSomething();
+	}
+	
+	void Recharge () {
+		time += Time.deltaTime;
+		if (time > RECHARGE_TIME) {
+			State = (int)States.Ready;
+		}
 	}
 	
 	// Update is called once per frame
@@ -118,6 +145,8 @@ public class MyoTrack : MonoBehaviour {
 			PoseCommand ();
 		} else if (State == (int)States.Firing) {
 			FireCommand ();
+		} else if (State == (int)States.Recharging) {
+			Recharge ();
 		}
 	}
 }
