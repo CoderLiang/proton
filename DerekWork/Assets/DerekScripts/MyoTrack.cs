@@ -113,11 +113,11 @@ public class MyoTrack : MonoBehaviour {
 		if (time > FIRE_TIME) {
 			State = (int)States.Recharging;
 			time = 0;
-			transform.localScale = Vector3Util.Vector3(0.25,2,0.25);
+			transform.localScale = Vector3Util.Vector3(0.45,3,0.45);
 			FireRocket();			
 			return;
 		}
-		transform.localScale = Vector3Util.Vector3(0.4,1.6,0.4);
+		transform.localScale = Vector3Util.Vector3(0.55,2.5,0.55);
 	}
 	
 	void FireRocket () {
