@@ -47,7 +47,10 @@
   </ItemGroup>
   <ItemGroup>
      <Compile Include="Assets\DerekScripts\AttackBall.cs" />
+     <Compile Include="Assets\DerekScripts\DeleteOnStart.cs" />
+     <Compile Include="Assets\DerekScripts\FixForward.cs" />
      <Compile Include="Assets\DerekScripts\Missile.cs" />
+     <Compile Include="Assets\DerekScripts\MyoClick.cs" />
      <Compile Include="Assets\DerekScripts\MyoTrack.cs" />
      <Compile Include="Assets\DerekScripts\Vector3Util.cs" />
      <Compile Include="Assets\Myo Samples\Scripts\ColorBoxByPose.cs" />

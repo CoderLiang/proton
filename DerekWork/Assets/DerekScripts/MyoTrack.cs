@@ -5,6 +5,7 @@ using Pose = Thalmic.Myo.Pose;
 using VibrationType = Thalmic.Myo.VibrationType;
 
 public class MyoTrack : MonoBehaviour {
+	public static bool game_started = false;
 	private const double FIRE_TIME = 0.4;
 
 	// Myo game object to connect with.
@@ -28,9 +29,9 @@ public class MyoTrack : MonoBehaviour {
 	
 	private enum States
 	{
-		Preinitial, Initial, Ready, Firing
+		Ready, Firing
 	}
-	private int State = (int)States.Preinitial;
+	private int State = (int)States.Ready;
 	
 	// Require the rocket to be a rigidbody.
 	// This way we the user can not assign a prefab without rigidbody
@@ -93,6 +94,11 @@ public class MyoTrack : MonoBehaviour {
 		}
 		transform.localScale = Vector3Util.Vector3(0.5,1,0.5);
 	}
+
+	void start_game() {
+		game_started = true;
+		Initialize ();
+	}
 	
 	void FireRocket () {
 		Rigidbody rocketClone = (Rigidbody) Instantiate(Rocket, transform.position, transform.rotation);
@@ -105,19 +111,17 @@ public class MyoTrack : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
-		if (State == (int)States.Preinitial)	{
-			State = (int)States.Initial;
-			return;
+		if (game_started) {
+				RotationCommand ();
 		}
-		if (State == (int)States.Initial)	{
-			Initialize ();
-			return;
-		}
-		RotationCommand ();
 		if (State == (int)States.Ready) {
 			PoseCommand ();
 		} else if (State == (int)States.Firing) {
-			FireCommand ();
+			if (game_started) {
+				FireCommand ();
+			} else {
+				start_game();
+			}
 		}
 	}
 }
