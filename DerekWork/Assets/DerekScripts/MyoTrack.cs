@@ -10,9 +10,11 @@ public class MyoTrack : MonoBehaviour {
 	public OVRCameraController cameraController;
 	public OVRPlayerController playerController;
 	public static bool game_started = false;
+	public static int score = 0;
 	private const double FIRE_TIME = 0.2;
 	private const double RECHARGE_TIME = 0.6;
 	public float ROCKET_SPEED = 100f;
+	public GameObject monsterSpawner;
 
 	// Myo game object to connect with.
 	// This object must have a ThalmicMyo script attached.
@@ -48,6 +50,11 @@ public class MyoTrack : MonoBehaviour {
 	// Use this for initialization
 	void Start () {
 		Myo = GameObject.Find ("Myo");
+	}
+
+	public static void endGame() {
+		Debug.Log (MyoTrack.score.ToString ());
+		game_started = false;
 	}
 	
 	void PoseCommand () {
@@ -135,6 +142,7 @@ public class MyoTrack : MonoBehaviour {
 
 		//cameraController.SetOrientationOffset (inverseQuat);
 		game_started = true;
+		Instantiate (monsterSpawner, Vector3.zero, Quaternion.identity);
 		Initialize ();
 	}
 	

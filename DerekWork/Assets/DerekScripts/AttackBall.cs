@@ -1,5 +1,4 @@
 ﻿using UnityEngine;
-using System.Collections;
 
 public class AttackBall : MonoBehaviour {
 	Vector3 directionVector;
@@ -18,5 +17,18 @@ public class AttackBall : MonoBehaviour {
 	// Update is called once per frame
 	void Update () {
 		transform.Translate (directionVector, Space.World);
+		if (transform.position.x < 2.0f) {
+			Debug.Log ("Print I AM ANGRY");
+			if(transform.position.x > -2.0f) {
+				Debug.Log ("I am VERY angry");
+				if(transform.position.z > -12.0f) {
+					Debug.Log ("I am ZZZZ angry");
+					if(transform.position.z < -8.0f) {
+						Debug.Log ("I am ARGH angry");
+						MyoTrack.endGame();
+					}
+				}
+			}
+		}
 	}
 }
