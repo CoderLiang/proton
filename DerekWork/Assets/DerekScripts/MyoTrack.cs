@@ -13,6 +13,10 @@ public class MyoTrack : MonoBehaviour {
 	private const double FIRE_TIME = 0.2;
 	private const double RECHARGE_TIME = 0.6;
 	public float ROCKET_SPEED = 100f;
+	
+	private float BaseX;
+	private float BaseY;
+	private float BaseZ;
 
 	// Myo game object to connect with.
 	// This object must have a ThalmicMyo script attached.
@@ -48,6 +52,9 @@ public class MyoTrack : MonoBehaviour {
 	// Use this for initialization
 	void Start () {
 		Myo = GameObject.Find ("Myo");
+		BaseX = transform.localScale.x;
+		BaseY = transform.localScale.y;
+		BaseZ = transform.localScale.z;
 	}
 	
 	void PoseCommand () {
@@ -114,11 +121,11 @@ public class MyoTrack : MonoBehaviour {
 		if (time > FIRE_TIME) {
 			State = (int)States.Recharging;
 			time = 0;
-			transform.localScale = Vector3Util.Vector3(0.45,3,0.45);
+			transform.localScale = Vector3Util.Vector3(BaseX,BaseY,BaseZ);
 			FireRocket();			
 			return;
 		}
-		transform.localScale = Vector3Util.Vector3(0.55,2.5,0.55);
+		transform.localScale = Vector3Util.Vector3(1.25*BaseX,0.75*BaseY,1.25*BaseZ);
 	}
 
 	void start_game() {
