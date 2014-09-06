@@ -108,7 +108,7 @@ public class MyoTrack : MonoBehaviour {
 			_lastPose = thalmicMyo.pose;
 			
 			// Vibrate the Myo armband when a fist is made.
-			if (thalmicMyo.pose == Pose.Fist) {
+			if (thalmicMyo.pose != Pose.Rest) {
 				thalmicMyo.Vibrate (VibrationType.Medium);                
 				time = 0;
 				State = (int)States.Firing;
