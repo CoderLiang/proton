@@ -7,6 +7,8 @@ using VibrationType = Thalmic.Myo.VibrationType;
 [RequireComponent(typeof(AudioSource))]
 
 public class MyoTrack : MonoBehaviour {
+	public OVRCameraController cameraController;
+	public OVRPlayerController playerController;
 	public static bool game_started = false;
 	private const double FIRE_TIME = 0.2;
 	private const double RECHARGE_TIME = 0.6;
@@ -122,11 +124,22 @@ public class MyoTrack : MonoBehaviour {
 	}
 
 	void start_game() {
+		//cameraController.EnableOrientation = true;
+		//cameraController.EnablePosition = true;
+		//cameraController.TrackerRotatesY = true;
+		//Debug.Log (cameraController.transform.rotation.ToString ());
+		//Quaternion inverseQuat = new Quaternion (-cameraController.transform.rotation.x,
+		//                                         -cameraController.transform.rotation.y,
+		//                                         -cameraController.transform.rotation.z,
+		//                                         -cameraController.transform.rotation.w);
+
+		//cameraController.SetOrientationOffset (inverseQuat);
 		game_started = true;
 		Initialize ();
 	}
 	
 	void FireRocket () {
+		Debug.Log (cameraController.transform.rotation.ToString ());
 		Rigidbody rocketClone = (Rigidbody) Instantiate(Rocket, transform.position, transform.rotation);
 		Physics.IgnoreCollision(rocketClone.collider, collider);
 		rocketClone.velocity = -transform.up * ROCKET_SPEED;		
