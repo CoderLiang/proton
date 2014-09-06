@@ -10,9 +10,9 @@ public class AttackBall : MonoBehaviour {
 		directionVector.y = 0 - this.transform.position.y;
 		directionVector.z = 0 - 10 - this.transform.position.z;
 		directionVector.Normalize ();
-		directionVector.x = directionVector.x / 10.0f;
-		directionVector.y = directionVector.y / 10.0f;
-		directionVector.z = directionVector.z / 10.0f;
+		directionVector.x = directionVector.x / 40.0f;
+		directionVector.y = directionVector.y / 40.0f;
+		directionVector.z = directionVector.z / 40.0f;
 	}
 	
 	// Update is called once per frame

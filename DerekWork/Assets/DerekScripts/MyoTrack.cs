@@ -111,7 +111,7 @@ public class MyoTrack : MonoBehaviour {
 			FireRocket();			
 			return;
 		}
-		transform.localScale = Vector3Util.Vector3(0.5,1,0.5);
+		transform.localScale = Vector3Util.Vector3(0.4,1.6,0.4);
 	}
 	
 	void FireRocket () {
