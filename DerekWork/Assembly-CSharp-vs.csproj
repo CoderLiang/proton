@@ -47,6 +47,7 @@
   </ItemGroup>
   <ItemGroup>
      <Compile Include="Assets\DerekScripts\AttackBall.cs" />
+     <Compile Include="Assets\DerekScripts\ClearOnStart.cs" />
      <Compile Include="Assets\DerekScripts\DeleteOnStart.cs" />
      <Compile Include="Assets\DerekScripts\DeleteOnStop.cs" />
      <Compile Include="Assets\DerekScripts\Explosion.cs" />
@@ -54,6 +55,8 @@
      <Compile Include="Assets\DerekScripts\Missile.cs" />
      <Compile Include="Assets\DerekScripts\MonsterSpawner.cs" />
      <Compile Include="Assets\DerekScripts\MyoTrack.cs" />
+     <Compile Include="Assets\DerekScripts\ResetOnStart.cs" />
+     <Compile Include="Assets\DerekScripts\ShowScore.cs" />
      <Compile Include="Assets\DerekScripts\Vector3Util.cs" />
      <Compile Include="Assets\GunEndRotationF.cs" />
      <Compile Include="Assets\Myo Samples\Scripts\ColorBoxByPose.cs" />
