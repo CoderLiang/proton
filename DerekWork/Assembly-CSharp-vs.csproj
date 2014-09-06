@@ -5,7 +5,7 @@
 	<Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
 	<ProductVersion>10.0.20506</ProductVersion>
 	<SchemaVersion>2.0</SchemaVersion>
-	<ProjectGuid>{91F20BB8-BDFD-6F00-07C3-863721F71E4E}</ProjectGuid>
+	<ProjectGuid>{07526CC7-DDC1-A120-B6E1-FA3DD9C39BA3}</ProjectGuid>
 	<OutputType>Library</OutputType>
 	<AppDesignerFolder>Properties</AppDesignerFolder>
 	<RootNamespace></RootNamespace>
@@ -46,9 +46,9 @@
 	</Reference>
   </ItemGroup>
   <ItemGroup>
+     <Compile Include="Assets\DerekScripts\Missile.cs" />
      <Compile Include="Assets\DerekScripts\MyoTrack.cs" />
      <Compile Include="Assets\DerekScripts\Vector3Util.cs" />
-     <Compile Include="Assets\Missile.cs" />
      <Compile Include="Assets\Myo Samples\Scripts\ColorBoxByPose.cs" />
      <Compile Include="Assets\Myo Samples\Scripts\JointOrientation.cs" />
      <Compile Include="Assets\Myo Samples\Scripts\SampleSceneGUI.cs" />

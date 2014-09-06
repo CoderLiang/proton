@@ -28,9 +28,9 @@ public class MyoTrack : MonoBehaviour {
 	
 	private enum States
 	{
-		Initial, Ready, Firing
+		Preinitial, Initial, Ready, Firing
 	}
-	private int State = (int)States.Initial;
+	private int State = (int)States.Preinitial;
 	
 	// Require the rocket to be a rigidbody.
 	// This way we the user can not assign a prefab without rigidbody
@@ -79,7 +79,6 @@ public class MyoTrack : MonoBehaviour {
 	
 	void RotationCommand () {
 		rotation = Myo.transform.eulerAngles - offset;
-		rotation.x *= -1;
 		rotation.z = 0;
 		transform.eulerAngles = rotation;
 	}
@@ -98,7 +97,7 @@ public class MyoTrack : MonoBehaviour {
 	void FireRocket () {
 		Rigidbody rocketClone = (Rigidbody) Instantiate(Rocket, transform.position, transform.rotation);
 		Physics.IgnoreCollision(rocketClone.collider, collider);
-		rocketClone.velocity = transform.up * RocketSpeed;		
+		rocketClone.velocity = -transform.up * RocketSpeed;		
 		
 		// You can also acccess other components / scripts of the clone
 		//rocketClone.GetComponent<MyRocketScript>().DoSomething();
@@ -106,8 +105,13 @@ public class MyoTrack : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
+		if (State == (int)States.Preinitial)	{
+			State = (int)States.Initial;
+			return;
+		}
 		if (State == (int)States.Initial)	{
 			Initialize ();
+			return;
 		}
 		RotationCommand ();
 		if (State == (int)States.Ready) {
