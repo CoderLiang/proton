@@ -99,6 +99,7 @@ public class MyoTrack : MonoBehaviour {
 			RocketCD = ROCKET_FIRE_TIME;
 			State = (int)States.RocketLauncher;
 			transform.localScale = Vector3Util.Vector3(1.25*BaseX,0.75*BaseY,1.25*BaseZ);
+			wasStrongGesture = true;
 			return;
 		} else if (Input.GetKey("o") && FlameCD <= 0) {
 			FlameCD = FLAMETHROWER_FIRE_TIME;
@@ -119,14 +120,14 @@ public class MyoTrack : MonoBehaviour {
 			_lastPose = thalmicMyo.pose;
 			
 			// Vibrate the Myo armband when a fist is made.
-			if (thalmicMyo.pose == Pose.ThumbToPinky && FlameCD <= 0) {
+			if (thalmicMyo.pose == Pose.ThumbToPinky && FlameCD <= 0 && game_started) {
 				thalmicMyo.Vibrate (VibrationType.Long);  
 				FlameCD = FLAMETHROWER_FIRE_TIME;
 				State = (int)States.Flamethrower;
 				//auido.PlayOneShot(STEVE'S FIRE');
 				Flamethrower.emissionRate = 100;
 			}
-			if (thalmicMyo.pose != Pose.Rest && thalmicMyo.pose != Pose.WaveIn && thalmicMyo.pose != Pose.WaveOut) {
+			else if (thalmicMyo.pose != Pose.Rest && thalmicMyo.pose != Pose.WaveIn && thalmicMyo.pose != Pose.WaveOut) {
 				thalmicMyo.Vibrate (VibrationType.Medium); 
 				if(thalmicMyo.pose == Pose.Fist) {
 					wasStrongGesture = true;
@@ -184,6 +185,7 @@ public class MyoTrack : MonoBehaviour {
 		//                                         -cameraController.transform.rotation.w);
 
 		//cameraController.SetOrientationOffset (inverseQuat);
+		RocketCD = ROCKET_RECHARGE_TIME;
 		game_started = true;
 		Instantiate (monsterSpawner, Vector3.zero, Quaternion.identity);
 		Initialize ();

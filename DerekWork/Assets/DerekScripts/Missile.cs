@@ -18,7 +18,6 @@ public class Missile : MonoBehaviour {
 			Destroy (col.gameObject);
 			Instantiate(Explosion,transform.position,transform.rotation);
 			Destroy (gameObject);
-			MyoTrack.score += 100;
 		}
 	}
 	

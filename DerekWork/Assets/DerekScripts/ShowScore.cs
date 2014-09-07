@@ -24,7 +24,7 @@ public class ShowScore : MonoBehaviour {
 			time = 0;
 		} else {
 			time += Time.deltaTime;
-			if (time > 3.0f) {
+			if (time > 15.0f) {
 				me.text = old;
 			}
 		}

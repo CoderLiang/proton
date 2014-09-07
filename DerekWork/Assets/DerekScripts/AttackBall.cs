@@ -61,4 +61,8 @@ public class AttackBall : MonoBehaviour {
 		}
 		transform.Translate (directionVector + modificationVector, Space.World);
 	}
+
+	void OnDestroy() {
+		MyoTrack.score += 100;
+	}
 }
