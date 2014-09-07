@@ -111,7 +111,7 @@ public class MyoTrack : MonoBehaviour {
 			// Vibrate the Myo armband when a fist is made.
 			if (thalmicMyo.pose != Pose.Rest && thalmicMyo.pose != Pose.WaveIn && thalmicMyo.pose != Pose.WaveOut) {
 				thalmicMyo.Vibrate (VibrationType.Medium); 
-				if(thalmicMyo.pose == Pose.ThumbToPinky || thalmicMyo.pose == Pose.Fist) {
+				if(thalmicMyo.pose == Pose.Fist) {
 					wasStrongGesture = true;
 				} else {
 					wasStrongGesture = false;
@@ -216,6 +216,9 @@ public class MyoTrack : MonoBehaviour {
 			} else {
 				if (wasStrongGesture == true) {
 					start_game();
+				} else {
+					//clear so that this works again
+					State = (int) States.Ready;
 				}
 			}
 		} else if (State == (int)States.Recharging) {
