@@ -19,6 +19,22 @@ public class AttackBall : MonoBehaviour {
 		directionVector.z = directionVector.z / 65.0f;
 	}
 	
+	/*void OnParticleCollision (Collision col) {
+		if (col.gameObject.name == "Monster(Clone)" || col.gameObject.name == "Monster") {
+			Destroy (col.gameObject);
+			//Steve's burning sound of awesomeness
+		}
+	}*/
+	
+	void OnParticleCollision(GameObject other) {
+		Debug.Log ("LOGGING COLLISION SHIT");
+		//if (other.name == "Monster(Clone)" || other.name == "Monster") {
+		Destroy (gameObject);
+		//Steve's burning sound  
+		//}
+		
+	}
+	
 	// Update is called once per frame
 	void Update () {
 		time += Time.deltaTime;

@@ -10,9 +10,13 @@ public class MyoTrack : MonoBehaviour {
 	public OVRCameraController cameraController;
 	public OVRPlayerController playerController;
 	public static bool game_started = false;
-	private const double FIRE_TIME = 0.2;
-	private const double RECHARGE_TIME = 0.6;
-	public float ROCKET_SPEED = 100f;
+	private const double ROCKET_FIRE_TIME = 0.2;
+	private const double ROCKET_RECHARGE_TIME = 0.6;
+	private const double ROCKET_SPEED = 100.0;
+	private double RocketCD;
+	private const double FLAMETHROWER_FIRE_TIME = 6.0;
+	private const double FLAMETHROWER_RECHARGE_TIME = 30.0;
+	private double FlameCD;
 	
 	private float BaseX;
 	private float BaseY;
@@ -21,11 +25,12 @@ public class MyoTrack : MonoBehaviour {
 	// Myo game object to connect with.
 	// This object must have a ThalmicMyo script attached.
 	public GameObject myo = null;
-	
 	private GameObject Myo;
+	public ParticleSystem Flamethrower;
+	public ParticleSystem ProtonBurst;
 	private Vector3 rotation;
 	private Vector3 offset;
-	private float time;
+
 	
 	// Materials to change to when poses are made.
 	public Material waveInMaterial;
@@ -39,14 +44,13 @@ public class MyoTrack : MonoBehaviour {
 	
 	private enum States
 	{
-		Ready, Firing, Recharging
+		Ready, RocketLauncher, Flamethrower
 	}
 	private int State = (int)States.Ready;
 	
 	// Require the rocket to be a rigidbody.
 	// This way we the user can not assign a prefab without rigidbody
-	public Rigidbody Rocket;
-	
+	public Rigidbody Rocket;	
     public AudioClip impact;
 
 	// Use this for initialization
@@ -55,16 +59,24 @@ public class MyoTrack : MonoBehaviour {
 		BaseX = transform.localScale.x;
 		BaseY = transform.localScale.y;
 		BaseZ = transform.localScale.z;
+		RocketCD = 0;
+		FlameCD = 0;
 	}
 	
 	void PoseCommand () {
-		if (Input.GetKey("p")) {
-			time = 0;
-			State = (int)States.Firing;
+		if (Input.GetKey("p") && RocketCD <= 0) {
+			RocketCD = ROCKET_FIRE_TIME;
+			State = (int)States.RocketLauncher;
+			transform.localScale = Vector3Util.Vector3(1.25*BaseX,0.75*BaseY,1.25*BaseZ);
+			return;
+		} else if (Input.GetKey("o") && FlameCD <= 0) {
+			FlameCD = FLAMETHROWER_FIRE_TIME;
+			State = (int)States.Flamethrower;
+			//audio.PlayOneShot(STEVE'S FIRE');
+			Flamethrower.emissionRate = 100;
 			return;
 		}
-	
-		// Access the ThalmicMyo component attached to the Myo game object.
+
 		ThalmicMyo thalmicMyo = myo.GetComponent<ThalmicMyo> ();
 		
 		// Check if the pose has changed since last update.
@@ -76,20 +88,35 @@ public class MyoTrack : MonoBehaviour {
 			_lastPose = thalmicMyo.pose;
 			
 			// Vibrate the Myo armband when a fist is made.
-			if (thalmicMyo.pose == Pose.Fist) {
+			if ((thalmicMyo.pose == Pose.Fist || thalmicMyo.pose == Pose.WaveIn || thalmicMyo.pose == Pose.WaveOut)
+			&& RocketCD <= 0) {
 				thalmicMyo.Vibrate (VibrationType.Medium);                
-				time = 0;
-				State = (int)States.Firing;
-				
-				// Change material when wave in, wave out or thumb to pinky poses are made.
-			} else if (thalmicMyo.pose == Pose.WaveIn) {
-				renderer.material = waveInMaterial;
-			} else if (thalmicMyo.pose == Pose.WaveOut) {
-				renderer.material = waveOutMaterial;
-			} else if (thalmicMyo.pose == Pose.ThumbToPinky) {
-				renderer.material = thumbToPinkyMaterial;
+				RocketCD = ROCKET_FIRE_TIME;
+				State = (int)States.RocketLauncher;
+				transform.localScale = Vector3Util.Vector3(1.25*BaseX,0.75*BaseY,1.25*BaseZ);
+			} else if (thalmicMyo.pose == Pose.ThumbToPinky && FlameCD <= 0) {
+				thalmicMyo.Vibrate (VibrationType.Long);  
+				FlameCD = FLAMETHROWER_FIRE_TIME;
+				State = (int)States.Flamethrower;
+				//auido.PlayOneShot(STEVE'S FIRE');
+				Flamethrower.emissionRate = 100;
 			}
 		}
+	}
+	
+	void start_game() {
+		//cameraController.EnableOrientation = true;
+		//cameraController.EnablePosition = true;
+		//cameraController.TrackerRotatesY = true;
+		//Debug.Log (cameraController.transform.rotation.ToString ());
+		//Quaternion inverseQuat = new Quaternion (-cameraController.transform.rotation.x,
+		//                                         -cameraController.transform.rotation.y,
+		//                                         -cameraController.transform.rotation.z,
+		//                                         -cameraController.transform.rotation.w);
+		
+		//cameraController.SetOrientationOffset (inverseQuat);
+		game_started = true;
+		Initialize ();
 	}
 	
 	void Initialize () {
@@ -116,68 +143,63 @@ public class MyoTrack : MonoBehaviour {
 		}
 	}
 	
-	void FireCommand () {
-		time += Time.deltaTime;
-		if (time > FIRE_TIME) {
-			State = (int)States.Recharging;
-			time = 0;
-			transform.localScale = Vector3Util.Vector3(BaseX,BaseY,BaseZ);
-			FireRocket();			
-			return;
+	void RocketPrep () {
+		RocketCD -= Time.deltaTime;
+		if (RocketCD <= 0) {
+			FireRocket();
 		}
-		transform.localScale = Vector3Util.Vector3(1.25*BaseX,0.75*BaseY,1.25*BaseZ);
 	}
 
-	void start_game() {
-		//cameraController.EnableOrientation = true;
-		//cameraController.EnablePosition = true;
-		//cameraController.TrackerRotatesY = true;
-		//Debug.Log (cameraController.transform.rotation.ToString ());
-		//Quaternion inverseQuat = new Quaternion (-cameraController.transform.rotation.x,
-		//                                         -cameraController.transform.rotation.y,
-		//                                         -cameraController.transform.rotation.z,
-		//                                         -cameraController.transform.rotation.w);
-
-		//cameraController.SetOrientationOffset (inverseQuat);
-		game_started = true;
-		Initialize ();
-	}
-	
 	void FireRocket () {
+		State = (int)States.Ready;
+		RocketCD = ROCKET_RECHARGE_TIME;
+		transform.localScale = Vector3Util.Vector3(BaseX,BaseY,BaseZ);
 		audio.PlayOneShot(impact, 0.7F);
+		ProtonBurst.Clear();
+		ProtonBurst.Play ();
 		Debug.Log (cameraController.transform.rotation.ToString ());
-		Rigidbody rocketClone = (Rigidbody) Instantiate(Rocket, transform.position + transform.up, transform.rotation);
+		Rigidbody rocketClone = (Rigidbody) Instantiate(Rocket, transform.position, transform.rotation);
 		Physics.IgnoreCollision(rocketClone.collider, collider);
-		rocketClone.velocity = -transform.up * ROCKET_SPEED;		
-		
-		// You can also acccess other components / scripts of the clone
-		//rocketClone.GetComponent<MyRocketScript>().DoSomething();
+		rocketClone.velocity = transform.up * System.Convert.ToSingle(-ROCKET_SPEED);
 	}
 	
-	void Recharge () {
-		time += Time.deltaTime;
-		if (time > RECHARGE_TIME) {
+	void FireFlamethrower () {
+		FlameCD -= Time.deltaTime;
+		if (FlameCD <= 0) {
+			FlameCD = FLAMETHROWER_RECHARGE_TIME;
 			State = (int)States.Ready;
+			Flamethrower.emissionRate = 0;
+		}
+	}
+	
+	void CooldownReduction () {
+		if (State != (int)States.RocketLauncher && RocketCD > 0) {
+			RocketCD -= Time.deltaTime;
+		}
+		if (State != (int)States.Flamethrower && FlameCD > 0) {
+			FlameCD -= Time.deltaTime;
 		}
 	}
 	
 	// Update is called once per frame
 	void Update () {
 		if (game_started) {
-				RotationCommand ();
+			RotationCommand ();
+			CooldownReduction ();
 		}
 		if (State == (int)States.Ready) {
 			Debug.Log ("States.Ready");
 			PoseCommand ();
-		} else if (State == (int)States.Firing) {
-			Debug.Log("States.Firing");
+		} else if (State == (int)States.RocketLauncher) {
+			Debug.Log("States.RocketLauncher");
 			if (game_started) {
-				FireCommand ();
+				RocketPrep ();
 			} else {
 				start_game();
 			}
-		} else if (State == (int)States.Recharging) {
-			Recharge ();
-		}
+		} else if (State == (int)States.Flamethrower) {
+			Debug.Log("States.Flamethrower");
+			FireFlamethrower ();
+		}		
 	}
 }
