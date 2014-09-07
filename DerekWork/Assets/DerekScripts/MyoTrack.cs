@@ -238,6 +238,9 @@ public class MyoTrack : MonoBehaviour {
 			} else {
 				if (wasStrongGesture == true) {
 					start_game();
+				} else {
+					//clear so that this works again
+					State = (int) States.Ready;
 				}
 			}
 		} else if (State == (int)States.Flamethrower) {
