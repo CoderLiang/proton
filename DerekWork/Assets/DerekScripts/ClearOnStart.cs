@@ -4,7 +4,6 @@ using System.Collections;
 public class ClearOnStart : MonoBehaviour {
 
 	public TextMesh me;
-	private bool was_playing = false;
 	private string originalText;
 	// Use this for initialization
 	void Start () {

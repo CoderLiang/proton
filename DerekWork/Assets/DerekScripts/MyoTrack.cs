@@ -19,9 +19,6 @@ public class MyoTrack : MonoBehaviour {
 	private double FlameCD;
 	public static int score = 0;
 	private static Quaternion initialOrientation;
-	private const double FIRE_TIME = 0.2;
-	private const double RECHARGE_TIME = 0.6;
-	public float ROCKET_SPEED = 100f;
 	public GameObject monsterSpawner;
 	private float BaseX;
 	private float BaseY;
@@ -32,7 +29,6 @@ public class MyoTrack : MonoBehaviour {
 	public TextMesh subTitleText3;
 	public bool wasStrongGesture;
 	public static MyoTrack me;
-
 
 	// Myo game object to connect with.
 	// This object must have a ThalmicMyo script attached.
@@ -129,6 +125,7 @@ public class MyoTrack : MonoBehaviour {
 				State = (int)States.Flamethrower;
 				//auido.PlayOneShot(STEVE'S FIRE');
 				Flamethrower.emissionRate = 100;
+			}
 			if (thalmicMyo.pose != Pose.Rest && thalmicMyo.pose != Pose.WaveIn && thalmicMyo.pose != Pose.WaveOut) {
 				thalmicMyo.Vibrate (VibrationType.Medium); 
 				if(thalmicMyo.pose == Pose.Fist) {
@@ -140,28 +137,11 @@ public class MyoTrack : MonoBehaviour {
 				RocketCD = ROCKET_FIRE_TIME;
 				State = (int)States.RocketLauncher;
 				transform.localScale = Vector3Util.Vector3(1.25*BaseX,0.75*BaseY,1.25*BaseZ);
-				
-				// Change material when wave in, wave out or thumb to pinky poses are made.
 			}
 		}
 	}
 	
-	void start_game() {
-		//cameraController.EnableOrientation = true;
-		//cameraController.EnablePosition = true;
-		//cameraController.TrackerRotatesY = true;
-		//Debug.Log (cameraController.transform.rotation.ToString ());
-		//Quaternion inverseQuat = new Quaternion (-cameraController.transform.rotation.x,
-		//                                         -cameraController.transform.rotation.y,
-		//                                         -cameraController.transform.rotation.z,
-		//                                         -cameraController.transform.rotation.w);
-		
-		//cameraController.SetOrientationOffset (inverseQuat);
-		game_started = true;
-		Initialize ();
-	}
-	
-		static void Initialize () {
+	static void Initialize () {
 		me.transform.rotation = Quaternion.Euler (270f, 0f, 0f);
 		offset = Myo.transform.eulerAngles;
 		offset.x += 90;

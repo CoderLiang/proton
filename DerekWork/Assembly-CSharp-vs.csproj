@@ -52,13 +52,15 @@
      <Compile Include="Assets\DerekScripts\DeleteOnStop.cs" />
      <Compile Include="Assets\DerekScripts\Explosion.cs" />
      <Compile Include="Assets\DerekScripts\FixForward.cs" />
+     <Compile Include="Assets\DerekScripts\GunEndRotationF.cs" />
      <Compile Include="Assets\DerekScripts\Missile.cs" />
      <Compile Include="Assets\DerekScripts\MonsterSpawner.cs" />
      <Compile Include="Assets\DerekScripts\MyoTrack.cs" />
      <Compile Include="Assets\DerekScripts\ResetOnStart.cs" />
      <Compile Include="Assets\DerekScripts\ShowScore.cs" />
+     <Compile Include="Assets\DerekScripts\TriangleMeshFlip.cs" />
      <Compile Include="Assets\DerekScripts\Vector3Util.cs" />
-     <Compile Include="Assets\GunEndRotationF.cs" />
+     <Compile Include="Assets\DerekScripts\wingflap.cs" />
      <Compile Include="Assets\Myo Samples\Scripts\ColorBoxByPose.cs" />
      <Compile Include="Assets\Myo Samples\Scripts\JointOrientation.cs" />
      <Compile Include="Assets\Myo Samples\Scripts\SampleSceneGUI.cs" />
@@ -86,8 +88,6 @@
      <Compile Include="Assets\OVR\Scripts\OVRUGUI.cs" />
      <Compile Include="Assets\OVR\Scripts\OVRUtils.cs" />
      <Compile Include="Assets\OVR\Scripts\OVRVisionGuide.cs" />
-     <Compile Include="Assets\TriangleMeshFlip.cs" />
-     <Compile Include="Assets\wingflap.cs" />
      <None Include="Assets\Plugins\donotdelete.txt" />
      <None Include="Assets\OVR\Shaders\TextShader3D.shader" />
      <None Include="Assets\Myo\README-MyoUnity.txt" />
