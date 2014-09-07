@@ -17,20 +17,32 @@ public class MyoTrack : MonoBehaviour {
 	private const double FLAMETHROWER_FIRE_TIME = 6.0;
 	private const double FLAMETHROWER_RECHARGE_TIME = 30.0;
 	private double FlameCD;
-	
+	public static int score = 0;
+	private static Quaternion initialOrientation;
+	private const double FIRE_TIME = 0.2;
+	private const double RECHARGE_TIME = 0.6;
+	public float ROCKET_SPEED = 100f;
+	public GameObject monsterSpawner;
 	private float BaseX;
 	private float BaseY;
 	private float BaseZ;
+	public TextMesh titleText;
+	public TextMesh subTitleText1;
+	public TextMesh subTitleText2;
+	public TextMesh subTitleText3;
+	public bool wasStrongGesture;
+	public static MyoTrack me;
+
 
 	// Myo game object to connect with.
 	// This object must have a ThalmicMyo script attached.
 	public GameObject myo = null;
-	private GameObject Myo;
 	public ParticleSystem Flamethrower;
 	public ParticleSystem ProtonBurst;
+	private static GameObject Myo;
 	private Vector3 rotation;
-	private Vector3 offset;
-
+	private static Vector3 offset;
+	private float time;
 	
 	// Materials to change to when poses are made.
 	public Material waveInMaterial;
@@ -46,7 +58,7 @@ public class MyoTrack : MonoBehaviour {
 	{
 		Ready, RocketLauncher, Flamethrower
 	}
-	private int State = (int)States.Ready;
+	private static int State = (int)States.Ready;
 	
 	// Require the rocket to be a rigidbody.
 	// This way we the user can not assign a prefab without rigidbody
@@ -56,11 +68,34 @@ public class MyoTrack : MonoBehaviour {
 	// Use this for initialization
 	void Start () {
 		Myo = GameObject.Find ("Myo");
+		me = this;
 		BaseX = transform.localScale.x;
 		BaseY = transform.localScale.y;
 		BaseZ = transform.localScale.z;
 		RocketCD = 0;
 		FlameCD = 0;
+		RenderTitle ();
+		//initialOrientation = transform.rotation;
+		}
+
+	void RenderTitle() {
+		//initialize title text
+		titleText.text = "Proton";
+		subTitleText1.text = "Look directly at this text,";
+		subTitleText2.text = "Raise your arm in front of you,";
+		subTitleText3.text = "And make a fist to begin.";
+	}
+
+	static void RenderScore(TextMesh titleTextIn, TextMesh subTitleTextIn) {
+		titleTextIn.text = "Proton";
+		subTitleTextIn.text = "Score: " + score;
+	}
+
+	public static void endGame() {
+		Debug.Log (MyoTrack.score.ToString ());
+		game_started = false;
+
+		Initialize ();
 	}
 	
 	void PoseCommand () {
@@ -88,18 +123,25 @@ public class MyoTrack : MonoBehaviour {
 			_lastPose = thalmicMyo.pose;
 			
 			// Vibrate the Myo armband when a fist is made.
-			if ((thalmicMyo.pose == Pose.Fist || thalmicMyo.pose == Pose.WaveIn || thalmicMyo.pose == Pose.WaveOut)
-			&& RocketCD <= 0) {
-				thalmicMyo.Vibrate (VibrationType.Medium);                
-				RocketCD = ROCKET_FIRE_TIME;
-				State = (int)States.RocketLauncher;
-				transform.localScale = Vector3Util.Vector3(1.25*BaseX,0.75*BaseY,1.25*BaseZ);
-			} else if (thalmicMyo.pose == Pose.ThumbToPinky && FlameCD <= 0) {
+			if (thalmicMyo.pose == Pose.ThumbToPinky && FlameCD <= 0) {
 				thalmicMyo.Vibrate (VibrationType.Long);  
 				FlameCD = FLAMETHROWER_FIRE_TIME;
 				State = (int)States.Flamethrower;
 				//auido.PlayOneShot(STEVE'S FIRE');
 				Flamethrower.emissionRate = 100;
+			if (thalmicMyo.pose != Pose.Rest && thalmicMyo.pose != Pose.WaveIn && thalmicMyo.pose != Pose.WaveOut) {
+				thalmicMyo.Vibrate (VibrationType.Medium); 
+				if(thalmicMyo.pose == Pose.Fist) {
+					wasStrongGesture = true;
+				} else {
+					wasStrongGesture = false;
+				}
+				thalmicMyo.Vibrate (VibrationType.Medium);                
+				RocketCD = ROCKET_FIRE_TIME;
+				State = (int)States.RocketLauncher;
+				transform.localScale = Vector3Util.Vector3(1.25*BaseX,0.75*BaseY,1.25*BaseZ);
+				
+				// Change material when wave in, wave out or thumb to pinky poses are made.
 			}
 		}
 	}
@@ -119,7 +161,8 @@ public class MyoTrack : MonoBehaviour {
 		Initialize ();
 	}
 	
-	void Initialize () {
+		static void Initialize () {
+		me.transform.rotation = Quaternion.Euler (270f, 0f, 0f);
 		offset = Myo.transform.eulerAngles;
 		offset.x += 90;
 		State = (int)States.Ready;
@@ -150,6 +193,22 @@ public class MyoTrack : MonoBehaviour {
 		}
 	}
 
+	void start_game() {
+		//cameraController.EnableOrientation = true;
+		//cameraController.EnablePosition = true;
+		//cameraController.TrackerRotatesY = true;
+		//Debug.Log (cameraController.transform.rotation.ToString ());
+		//Quaternion inverseQuat = new Quaternion (-cameraController.transform.rotation.x,
+		//                                         -cameraController.transform.rotation.y,
+		//                                         -cameraController.transform.rotation.z,
+		//                                         -cameraController.transform.rotation.w);
+
+		//cameraController.SetOrientationOffset (inverseQuat);
+		game_started = true;
+		Instantiate (monsterSpawner, Vector3.zero, Quaternion.identity);
+		Initialize ();
+	}
+	
 	void FireRocket () {
 		State = (int)States.Ready;
 		RocketCD = ROCKET_RECHARGE_TIME;
@@ -195,7 +254,9 @@ public class MyoTrack : MonoBehaviour {
 			if (game_started) {
 				RocketPrep ();
 			} else {
-				start_game();
+				if (wasStrongGesture == true) {
+					start_game();
+				}
 			}
 		} else if (State == (int)States.Flamethrower) {
 			Debug.Log("States.Flamethrower");
