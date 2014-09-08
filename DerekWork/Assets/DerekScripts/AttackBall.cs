@@ -13,25 +13,14 @@ public class AttackBall : MonoBehaviour {
 		directionVector.y = 0 - this.transform.position.y;
 		directionVector.z = 0 - 10 - this.transform.position.z;
 		directionVector.Normalize ();
-		directionVector.x = directionVector.x / 65.0f;
-		directionVector.y = directionVector.y / 65.0f;
-		directionVector.z = directionVector.z / 65.0f;
+		directionVector.x = directionVector.x / (50.0f - (9f * level));
+		directionVector.y = directionVector.y / (50.0f - (9f * level));
+		directionVector.z = directionVector.z / (50.0f - (9f * level));
 	}
 	
-	/*void OnParticleCollision (Collision col) {
-		if (col.gameObject.name == "Monster(Clone)" || col.gameObject.name == "Monster") {
-			Destroy (col.gameObject);
-			//Steve's burning sound of awesomeness
-		}
-	}*/
-	
 	void OnParticleCollision(GameObject other) {
-		Debug.Log ("LOGGING COLLISION SHIT");
-		//if (other.name == "Monster(Clone)" || other.name == "Monster") {
+		Debug.Log ("Monster collided with flamethrower particle; destroying it.");
 		Destroy (gameObject);
-		//Steve's burning sound  
-		//}
-		
 	}
 	
 	// Update is called once per frame

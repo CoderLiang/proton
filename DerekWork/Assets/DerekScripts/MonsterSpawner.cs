@@ -2,14 +2,19 @@
 using System.Collections;
 
 public class MonsterSpawner : MonoBehaviour {
-	private const float SPAWN_DISTANCE = 20f;
+	private const float SPAWN_DISTANCE = 30f;
 	public GameObject Monster;
 	private float time;
 	private float rate;
 	private int spawned;
 	// Use this for initialization
 	void Start () {
-		time = 0;
+		float x = Random.Range(-1f, 1f);
+		float z = Random.Range(0.5f, 1f);
+		Vector3 direction = new Vector3(x, 0, z);
+		direction = direction.normalized * SPAWN_DISTANCE;
+		Instantiate (Monster, direction, new Quaternion (0, 180f, 0, 0));
+		time = -3;
 		rate = 0;
 		spawned = 1;
 	}
@@ -19,7 +24,7 @@ public class MonsterSpawner : MonoBehaviour {
 		float z = Random.Range(-1f, 1f);
 		Vector3 direction = new Vector3(x, 0f, z);
 		direction = direction.normalized * SPAWN_DISTANCE;
-		direction.y = Random.Range (-2f, 15f);
+		direction.y = Random.Range (-2f, 20f);
 		int level = 0;
 		int rand = Random.Range (1,25);
 		if (spawned >= 5 && spawned < 10) {
@@ -47,7 +52,7 @@ public class MonsterSpawner : MonoBehaviour {
 				level = 2;
 			}
 		}
-		Instantiate (Monster,direction,new Quaternion(level,0,0,0));
+		Instantiate (Monster,direction,new Quaternion(level,180f,0,0));
 		++spawned;
 		Debug.Log (spawned);
 	}
@@ -56,7 +61,7 @@ public class MonsterSpawner : MonoBehaviour {
 	void Update () {
 		time += Time.deltaTime;
 		rate += Time.deltaTime;
-		if (time > (10f * Mathf.Pow(rate,-0.2f))) {
+		if (time > (18f * Mathf.Pow(rate,-0.35f))) {
 			time = 0;
 			Spawn ();
 		}

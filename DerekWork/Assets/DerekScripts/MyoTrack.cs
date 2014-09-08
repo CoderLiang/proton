@@ -13,7 +13,7 @@ public class MyoTrack : MonoBehaviour {
 	private const double ROCKET_FIRE_TIME = 0.2;
 	private const double ROCKET_RECHARGE_TIME = 0.6;
 	private const double ROCKET_SPEED = 100.0;
-	private double RocketCD;
+	private static double RocketCD;
 	private const double FLAMETHROWER_FIRE_TIME = 6.0;
 	private const double FLAMETHROWER_RECHARGE_TIME = 30.0;
 	private double FlameCD;
@@ -60,6 +60,7 @@ public class MyoTrack : MonoBehaviour {
 	// This way we the user can not assign a prefab without rigidbody
 	public Rigidbody Rocket;	
     public AudioClip impact;
+	public AudioClip endgame;
 
 	// Use this for initialization
 	void Start () {
@@ -89,6 +90,8 @@ public class MyoTrack : MonoBehaviour {
 
 	public static void endGame() {
 		Debug.Log (MyoTrack.score.ToString ());
+		//audio.PlayOneShot (endgame, 0.7F);
+		RocketCD = 5.0F;
 		game_started = false;
 
 		Initialize ();
@@ -105,7 +108,7 @@ public class MyoTrack : MonoBehaviour {
 			FlameCD = FLAMETHROWER_FIRE_TIME;
 			State = (int)States.Flamethrower;
 			//audio.PlayOneShot(STEVE'S FIRE');
-			Flamethrower.emissionRate = 100;
+			Flamethrower.emissionRate = 150;
 			return;
 		}
 
@@ -121,11 +124,12 @@ public class MyoTrack : MonoBehaviour {
 			
 			// Vibrate the Myo armband when a fist is made.
 			if (thalmicMyo.pose == Pose.ThumbToPinky && FlameCD <= 0 && game_started) {
-				thalmicMyo.Vibrate (VibrationType.Long);  
+				Debug.Log ("ThumbToPinky");
+				//thalmicMyo.Vibrate (VibrationType.Long);  
 				FlameCD = FLAMETHROWER_FIRE_TIME;
 				State = (int)States.Flamethrower;
 				//auido.PlayOneShot(STEVE'S FIRE');
-				Flamethrower.emissionRate = 100;
+				Flamethrower.emissionRate = 150;
 			}
 			else if (thalmicMyo.pose != Pose.Rest && thalmicMyo.pose != Pose.WaveIn && thalmicMyo.pose != Pose.WaveOut) {
 				thalmicMyo.Vibrate (VibrationType.Medium); 
@@ -133,8 +137,7 @@ public class MyoTrack : MonoBehaviour {
 					wasStrongGesture = true;
 				} else {
 					wasStrongGesture = false;
-				}
-				thalmicMyo.Vibrate (VibrationType.Medium);                
+				}              
 				RocketCD = ROCKET_FIRE_TIME;
 				State = (int)States.RocketLauncher;
 				transform.localScale = Vector3Util.Vector3(1.25*BaseX,0.75*BaseY,1.25*BaseZ);
@@ -188,6 +191,7 @@ public class MyoTrack : MonoBehaviour {
 		RocketCD = ROCKET_RECHARGE_TIME;
 		game_started = true;
 		Instantiate (monsterSpawner, Vector3.zero, Quaternion.identity);
+		//audio.PlayOneShot (startgame, 0.7F);
 		Initialize ();
 	}
 	
