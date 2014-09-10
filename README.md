@@ -6,7 +6,7 @@ A full virtual-reality shooter using the Myo armband and the Oculus Rift
 Installing
 =========
 This software requires an Oculus Rift, Myo armband, and accompanying software in order to be played correctly.
-Executable versions are available in the root directory, and can be run directly. Mac and Linux versions are untested. Source is available in the src/ directory; you will need Unity Pro to develop.
+Executable versions are available in the root directory, and can be run directly. Mac and Linux versions are currently unworking. Source is available in the src/ directory; you will need Unity Pro to develop.
 
 Playing
 =========
